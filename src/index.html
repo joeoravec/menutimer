@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ng-boilerplate</title>
+
+    <!-- social media tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@joshdmiller">
+    <meta name="twitter:title" content="ngBoilerplate">
+    <meta name="twitter:description" content="Non-Trivial AngularJS Made Easy: Everything you need to kickstart AngularJS projects: a best-practice directory structure, an intelligent build system, and the best web design libraries around.">
+    <meta name="twitter:creator" content="@joshdmiller">
+    <meta name="twitter:image:src" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846">
+    <meta property="og:title" content="ngBoilerplate" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://bit.ly/ngBoilerplate" />
+    <meta property="og:image" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846" />
+    <meta property="og:description" content="Non-Trivial AngularJS Made Easy: Everything you need to kickstart AngularJS projects: a best-practice directory structure, an intelligent build system, and the best web design libraries around.">
+
+    <!-- font awesome from BootstrapCDN -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
+
+    <!--[if IE 7>
+    <link rel="stylesheet" href="assets/font-awesome-ie7.min.css />
+    <![endif]-->
+
+    <!-- compiled JS --><% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="<%= file %>"></script><% }); %>
+
+    <!-- it's stupid to have to load it here, but this is for the +1 button -->
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+      { "parsetags": "explicit" }
+    </script>
+  </head>
+  <body ng-app="menuApp">
+    <div class="container">
+
+      <div ng-controller="MyCtrl">
+    <div ng-repeat="item in menu">
+        <div style="float: left;">{{item.name}}: <!--{{formatDate(item.cooktime.start)}} - {{formatDate(item.cooktime.end)}} <span ng-show="item.resttime.start > 0">| {{formatDate(item.resttime.start)}} - {{formatDate(item.resttime.end)}} </span><span ng-show="item.finishtime.start > 0">|{{formatDate(item.finishtime.start)}} - {{formatDate(item.finishtime.end)}}</span> -->
+
+        </div>
+        <div style="position: relative;">
+            <div class="finishtimebar" title="{{formatDate(item.finishtime.start)}} - {{formatDate(item.finishtime.end)}}" style="position: absolute; top: 0; right: 0;  background: #006F48; height: 20px; width: {{item.finishtime.time}}px;"></div>
+            <div class="resttimebar" title="{{formatDate(item.resttime.start)}} - {{formatDate(item.resttime.end)}}" style="position: absolute; top: 0; right: {{calcRight(item.finishtime.time)}}px;  background: #A69800; height: 20px; width: {{item.resttime.time}}px;"></div>
+            <div class="cooktimebar" title="{{formatDate(item.cooktime.start)}} - {{formatDate(item.cooktime.end)}}" style="position: absolute; top: 0; right: {{calcRight(item.finishtime.time, item.resttime.time)}}px;  background: #A63600; height: 20px; width: {{item.cooktime.time}}px;"></div>
+            <div class="preptimebar" ng-class="{'current': formatDate(currentTime) >= formatDate(item.preptime.start) && formatDate(currentTime) <= formatDate(item.preptime.end) }" title="{{formatDate(item.preptime.start)}} - {{formatDate(item.preptime.end)}}" style="position: absolute; top: 0; right: {{calcRight(item.finishtime.time, item.resttime.time, item.cooktime.time)}}px;  height: 20px; width: {{item.preptime.time}}px; margin-right: {{calcMargin(item.cooktime.start, item.preptime.end)}}px;"></div>
+        </div>
+        <!--<br/>
+        {{formatDate(currentTime)}} - {{formatDate(item.preptime.start)}} - {{formatDate(item.preptime.end)}}
+-->
+        <br/>
+    </div>
+    <br/>
+    <label for="itemname">Name:</label>
+    <input name="itemname" type="text" ng-model="itemName" />
+    <br/>
+    <label for="preptime">Prep Time:</label>
+    <input name="preptime" type="text" ng-model="prepTime" />
+    <br/>
+    <label for="cooktime">Cook Time:</label>
+    <input name="cooktime" type="text" ng-model="cookTime" />
+    <br/>
+    <label for="resttime">Rest Time:</label>
+    <input name="resttime" type="text" ng-model="restTime" />
+    <br/>
+    <label for="finishtime">Finish Time:</label>
+    <input name="finishtime" type="text" ng-model="finishTime" />
+    <br/>
+    <button ng-click="addMenuItem()">Add to menu</button>
+    <div>Now: {{ currentTime }} ( {{formatDate(currentTime) }} )</div>
+    <div>Target: {{ dinnertime }} ( {{formatDate(dinnertime) }} )</div>
+</div>
+      </div>
+    </div>
+
+    <div class="container" ui-view="main"></div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-inner">
+          <ul class="social">
+            <li><a target="_blank" href="http://gplus.to/joshdmiller"><i class="icon-google-plus-sign"></i></a></li>
+            <li><a target="_blank" href="http://twitter.com/joshdmiller"><i class="icon-twitter-sign"></i></a></li>
+            <li><a target="_blank" href="http://linkedin.com/in/joshdmiller"><i class="icon-linkedin-sign"></i></a></li>
+            <li><a target="_blank" href="http://github.com/joshdmiller/ng-boilerplate"><i class="icon-github-sign"></i></a></li>
+          </ul>
+          
+
+          <p>
+            (c) 2013 Josh David Miller. 
+            <a href="http://github.com/joshdmiller/ng-boilerplate/fork_select">Fork this</a>
+            to kickstart your next project.
+            <br />
+            ng-boilerplate is based on
+            <a href="http://www.angularjs.org">AngularJS</a>,
+            <a href="http://getbootstrap.com">Bootstrap</a>, 
+            <a href="http://angular-ui.github.com/bootstrap">UI Bootstrap</a>,
+            and 
+            <a href="http://fortawesome.github.com/Font-Awesome">Font Awesome</a>.        
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
