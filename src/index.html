@@ -39,22 +39,22 @@
 
       <div ng-controller="MyCtrl">
     <div ng-repeat="item in menu" style="height:44px; padding: 2px;">
-        <div style="float: left;">{{item.name}}: <!--{{formatDate(item.cooktime.start)}} - {{formatDate(item.cooktime.end)}} <span ng-show="item.resttime.start > 0">| {{formatDate(item.resttime.start)}} - {{formatDate(item.resttime.end)}} </span><span ng-show="item.finishtime.start > 0">|{{formatDate(item.finishtime.start)}} - {{formatDate(item.finishtime.end)}}</span> -->
-
-        </div>
+        <div style="float: left;">{{item.name}}: </div>
         <div style="position: relative;">
-            <div class="finishtimebar" title="{{formatDate(item.finishtime.start)}} - {{formatDate(item.finishtime.end)}}" style="position: absolute; top: 0; right: 0;  background: #006F48; height: 40px; width: {{calcSegmentWidth(item.finishtime.time)}}px;"></div>
-            <div class="resttimebar" title="{{formatDate(item.resttime.start)}} - {{formatDate(item.resttime.end)}}" style="position: absolute; top: 0; right: {{calcRight(item.finishtime.time)}}px;  background: #A69800; height: 40px; width: {{calcSegmentWidth(item.resttime.time)}}px;"></div>
-            <div class="cooktimebar" title="{{formatDate(item.cooktime.start)}} - {{formatDate(item.cooktime.end)}}" style="position: absolute; top: 0; right: {{calcRight(item.finishtime.time, item.resttime.time)}}px;  background: #A63600; height: 40px; width: {{calcSegmentWidth(item.cooktime.time)}}px;"></div>
-            <div class="preptimebar" ng-class="{'current': formatDate(currentTime) >= formatDate(item.preptime.start) && formatDate(currentTime) <= formatDate(item.preptime.end) }" title="{{formatDate(item.preptime.start)}} - {{formatDate(item.preptime.end)}}" style="position: absolute; top: 0; right: {{calcRight(item.finishtime.time, item.resttime.time, item.cooktime.time)}}px;  height: 40px; width: {{calcSegmentWidth(item.preptime.time)}}px; margin-right: {{calcMargin(item.cooktime.start, item.preptime.end)}}px;"></div>
+            <div class="finishtimebar timesegment" title="{{formatDate(item.finishtime.start)}} - {{formatDate(item.finishtime.end)}}" style="right: 0;  width: {{calcSegmentWidth(item.finishtime.time)}}px;"></div>
+            <div class="resttimebar timesegment" title="{{formatDate(item.resttime.start)}} - {{formatDate(item.resttime.end)}}" style="right: {{calcRight(item.finishtime.time)}}px;  width: {{calcSegmentWidth(item.resttime.time)}}px;"></div>
+            <div class="cooktimebar timesegment" title="{{formatDate(item.cooktime.start)}} - {{formatDate(item.cooktime.end)}}" style="right: {{calcRight(item.finishtime.time, item.resttime.time)}}px;  width: {{calcSegmentWidth(item.cooktime.time)}}px;"></div>
+            <div class="preptimebar timesegment" ng-class="{'current': formatDate(currentTime) >= formatDate(item.preptime.start) && formatDate(currentTime) <= formatDate(item.preptime.end) }" title="{{formatDate(item.preptime.start)}} - {{formatDate(item.preptime.end)}}" style="right: {{calcRight(item.finishtime.time, item.resttime.time, item.cooktime.time)}}px;  width: {{calcSegmentWidth(item.preptime.time)}}px; margin-right: {{calcMargin(item.cooktime.start, item.preptime.end)}}px;"></div>
         </div>
         <!--<br/>
         {{formatDate(currentTime)}} - {{formatDate(item.preptime.start)}} - {{formatDate(item.preptime.end)}}
 -->
         <br/>
     </div>
+    <div ng-show="menu.length==0">No Menu Items added</div>
+
     <br/>
-    <label for="itemname">Name:</label>
+    <label for="itemname">Dish/Course:</label>
     <input name="itemname" type="text" ng-model="itemName" />
     <br/>
     <label for="preptime">Prep Time:</label>
