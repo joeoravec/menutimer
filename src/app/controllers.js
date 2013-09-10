@@ -14,26 +14,17 @@
     $scope.menu = [];
 
     // This needs to be dynamic
-    $scope.dinnertime = Date.parse("Fri, 06 Sep 2013 18:00:00");
+    $scope.starttime = 0;
+    $scope.dinnertime = Date.parse("Tue, 10 Sep 2013 18:00:00");
+    $scope.widthMultiplier = 1;
+    $scope.$watch('starttime', function(newValue, oldValue, scope) {
+        $scope.widthMultiplier = 800 / (($scope.dinnertime - $scope.starttime)/60000);
+    });
 
     // Date formatting is (I think) specific to the presentation layer -- and can be moved into a directive
     $scope.formatDate = function (timevalue) {
-        var date = new Date(timevalue);
-
-        function pad(s) {
-            return ((''+s).length < 2 ? '0' : '') + s;
-        }
-        function fixHour(h) {
-            return ( h=== 0 ? '12' : (h > 12 ? h-12 : h) );
-        }
-        var h=date.getHours(),
-            m=date.getMinutes(),
-            s=date.getSeconds(),
-            timeStr=[(fixHour(h)),
-            pad(m),
-            pad(s)].join(':');
-
-        return timeStr + ' ' + (h < 12 ? 'AM' : 'PM');
+        var datevalue = new Date(timevalue);
+        return datevalue.toLocaleTimeString();
     };
 
 
@@ -104,12 +95,14 @@
         var i,
             menuLength = $scope.menu.length,
             lastPrepTimeStart,
+            thisMenuItemStart,
             thisSectionStart = 0,
             thisSectionEnd = 0;
 
         $scope.menu.sort(sortMenu);
 
         for (i = 0; i < menuLength; i++) {
+            thisMenuItemStart = 0;
             // set finish time
             if (($scope.menu[i].finishtime.time) && ($scope.menu[i].finishtime.time > 0)) {
                 $scope.menu[i].setMenuTime('finishtime', $scope.menu[i].finishtime.time, $scope.dinnertime - ($scope.menu[i].finishtime.time * 60 * 1000), $scope.dinnertime);
@@ -136,20 +129,30 @@
                 thisSectionEnd = $scope.dinnertime;
             }
             $scope.menu[i].setMenuTime('cooktime', $scope.menu[i].cooktime.time, thisSectionEnd - ($scope.menu[i].cooktime.time * 60 * 1000), thisSectionEnd);
+            thisMenuItemStart = $scope.menu[i].cooktime.start;
+
 
             //set prep time
             lastPrepTimeStart = i > 0 ? $scope.menu[i - 1].preptime.start : 0;
             $scope.menu[i].preptime.end = ($scope.menu[i].cooktime.start < lastPrepTimeStart) || (lastPrepTimeStart === 0) ? $scope.menu[i].cooktime.start : lastPrepTimeStart;
             $scope.menu[i].preptime.start = $scope.menu[i].preptime.end - ($scope.menu[i].preptime.time * 60 * 1000);
+            thisMenuItemStart = $scope.menu[i].preptime.time > 0 ? $scope.menu[i].preptime.start : $scope.menu[i].cooktime.start;
+
+            $scope.menu[i].start = thisMenuItemStart;
+
+            if (thisMenuItemStart < $scope.starttime || $scope.starttime === 0) {
+                $scope.starttime = thisMenuItemStart;
+            }
 
         }
+        console.log(($scope.dinnertime - $scope.starttime)/60000);
         $scope.menu.reverse();
     };
 
 
     // Should create a directive and include these two functions there
     // ----------
-    
+
     $scope.calcRight = function() {
         var i,
             totalPixels = 0,
@@ -157,11 +160,15 @@
         for (i=0; i < args.length; i++) {
             totalPixels += parseInt(args[i], 10);
         }
-        return totalPixels;
+        return (totalPixels * $scope.widthMultiplier);
     };
     
     $scope.calcMargin = function (start, end) {
-        return (start - end) / 60000;
+        return (((start - end) / 60000) * $scope.widthMultiplier);
+    };
+
+    $scope.calcSegmentWidth = function (timeMinutes) {
+        return (timeMinutes * $scope.widthMultiplier) - 2;
     };
 
     // --------------
