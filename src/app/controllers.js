@@ -15,7 +15,7 @@
 
     // This needs to be dynamic
     $scope.starttime = 0;
-    $scope.dinnertime = Date.parse("Tue, 10 Sep 2013 18:00:00");
+    $scope.dinnertime = Date.parse("Tue, 11 Sep 2013 18:00:00");
     $scope.widthMultiplier = 1;
     $scope.$watch('starttime', function(newValue, oldValue, scope) {
         $scope.widthMultiplier = 800 / (($scope.dinnertime - $scope.starttime)/60000);
@@ -23,10 +23,23 @@
 
     // Date formatting is (I think) specific to the presentation layer -- and can be moved into a directive
     $scope.formatDate = function (timevalue) {
-        var datevalue = new Date(timevalue);
-        return datevalue.toLocaleTimeString();
-    };
+        var date = new Date(timevalue);
 
+        function pad(s) {
+            return ((''+s).length < 2 ? '0' : '') + s;
+        }
+        function fixHour(h) {
+            return ( h=== 0 ? '12' : (h > 12 ? h-12 : h) );
+        }
+        var h=date.getHours(),
+            m=date.getMinutes(),
+            s=date.getSeconds(),
+            timeStr=[(fixHour(h)),
+            pad(m),
+            pad(s)].join(':');
+
+        return timeStr + ' ' + (h < 12 ? 'AM' : 'PM');
+    };
 
     $scope.addMenuItem = function () {
         var thisstart = new Date($scope.dinnertime - ($scope.cookTime * 60 * 1000)),
