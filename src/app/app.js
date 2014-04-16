@@ -25,7 +25,8 @@
 
 var menuApp = angular.module('menuApp', [
 	'menuApp.services',
-	'menuApp.controllers'
+	'menuApp.controllers',
+    'menuApp.directives'
   ]);
 
 menuApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
