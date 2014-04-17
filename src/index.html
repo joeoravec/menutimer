@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>ng-boilerplate</title>
+    <title>Menu Timer</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- social media tags -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@joshdmiller">
-    <meta name="twitter:title" content="ngBoilerplate">
-    <meta name="twitter:description" content="Non-Trivial AngularJS Made Easy: Everything you need to kickstart AngularJS projects: a best-practice directory structure, an intelligent build system, and the best web design libraries around.">
-    <meta name="twitter:creator" content="@joshdmiller">
+    <meta name="twitter:site" content="@joeoravec">
+    <meta name="twitter:title" content="menutimer">
+    <meta name="twitter:description" content="Eat dinner at dinnertime.">
+    <meta name="twitter:creator" content="@joeoravec">
     <meta name="twitter:image:src" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846">
-    <meta property="og:title" content="ngBoilerplate" />
+    <meta property="og:title" content="menutimer" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://bit.ly/ngBoilerplate" />
+    <meta property="og:url" content="http://www.menutimer.com" />
     <meta property="og:image" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846" />
     <meta property="og:description" content="Non-Trivial AngularJS Made Easy: Everything you need to kickstart AngularJS projects: a best-practice directory structure, an intelligent build system, and the best web design libraries around.">
 
@@ -20,28 +22,15 @@
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
     <!-- compiled CSS -->
-    <link rel="stylesheet" type="text/css" href="assets/ng-boilerplate.css" />
+    <link rel="stylesheet" type="text/css" href="assets/menutimer.css" />
+
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 
     <!--[if IE 7>
     <link rel="stylesheet" href="assets/font-awesome-ie7.min.css />
     <![endif]-->
 
-    <!-- compiled JS -->
-    <script type="text/javascript" src="vendor/angular/angular.js"></script>
-    <script type="text/javascript" src="vendor/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script type="text/javascript" src="vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js"></script>
-    <script type="text/javascript" src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
-    <script type="text/javascript" src="vendor/angular-ui-utils/modules/route/route.js"></script>
-    <script type="text/javascript" src="src/app/about/about.js"></script>
-    <script type="text/javascript" src="src/app/app.js"></script>
-    <script type="text/javascript" src="src/app/controllers.js"></script>
-    <script type="text/javascript" src="src/app/directives.js"></script>
-    <script type="text/javascript" src="src/app/home/home.js"></script>
-    <script type="text/javascript" src="src/app/models.js"></script>
-    <script type="text/javascript" src="src/common/plusOne/plusOne.js"></script>
-    <script type="text/javascript" src="src/common/titleService/titleService.js"></script>
-    <script type="text/javascript" src="templates-common.js"></script>
-    <script type="text/javascript" src="templates-app.js"></script>
 
     <!-- it's stupid to have to load it here, but this is for the +1 button -->
     <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
@@ -51,8 +40,8 @@
   <body ng-app="menuApp">
     <div class="container">
 
-      <div ng-controller="MyCtrl">
-    <div ng-repeat="item in menu" style="height:44px; padding: 2px;">
+      <div ng-controller="MyCtrl">{{testMenu.starttime}}
+    <div ng-repeat="item in testMenu.menuItems" style="height:44px; padding: 2px;">
         <div style="float: left;">{{item.name}}: </div>
         <div style="position: relative;">
 
@@ -60,16 +49,8 @@
             <menu-bar item-type="rest" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
             <menu-bar item-type="cook" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
             <menu-bar item-type="prep" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
-            <!--
-            <div class="finishtimebar timesegment" title="{{formatDate(item.finishtime.start)}} - {{formatDate(item.finishtime.end)}}" style="right: 0;  width: {{calcSegmentWidth(item.finishtime.time)}}px;"></div>
-            <div class="resttimebar timesegment" title="{{formatDate(item.resttime.start)}} - {{formatDate(item.resttime.end)}}" style="right: {{calcRight(item.finishtime.time)}}px;  width: {{calcSegmentWidth(item.resttime.time)}}px;"></div>
-            <div class="cooktimebar timesegment" title="{{formatDate(item.cooktime.start)}} - {{formatDate(item.cooktime.end)}}" style="right: {{calcRight(item.finishtime.time, item.resttime.time)}}px;  width: {{calcSegmentWidth(item.cooktime.time)}}px;"></div>
-            <div class="preptimebar timesegment" ng-class="{'current': formatDate(currentTime) >= formatDate(item.preptime.start) && formatDate(currentTime) <= formatDate(item.preptime.end) }" title="{{formatDate(item.preptime.start)}} - {{formatDate(item.preptime.end)}}" style="right: {{calcRight(item.finishtime.time, item.resttime.time, item.cooktime.time)}}px;  width: {{calcSegmentWidth(item.preptime.time)}}px; margin-right: {{calcMargin(item.cooktime.start, item.preptime.end)}}px;"></div>
-        -->
+
         </div>
-        <!--<br/>
-        {{formatDate(currentTime)}} - {{formatDate(item.preptime.start)}} - {{formatDate(item.preptime.end)}}
--->
         <br/>
     </div>
     <div ng-show="menu.length==0">No Menu Items added</div>
@@ -98,15 +79,37 @@
     </div>
 
     <div class="container" ui-view="main"></div>
+<div class="panel">
+        <h3 class="panel-heading">Button Styles</h3>
+        <button class="btn">Basic Button</button>
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-success">Success</button>
+        <button class="btn btn-warning">Warning</button>
+        <button class="btn btn-info">Info</button>
+        <button class="btn btn-danger">Danger</button>
+    </div>
+
+    <div class="panel">
+        <h3 class="panel-heading">Striped, Bordered and Highlighted Table</h3>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr><th>Country</th><th>Capital City</th></tr>
+            </thead>
+            <tr><td>United Kingdom</td><td>London</td></tr>
+            <tr><td>France</td><td>Paris</td></tr>
+            <tr><td>Spain</td><td>Madrid</td></tr>
+        </table>
+    </div>
+
 
     <footer class="footer">
       <div class="container">
         <div class="footer-inner">
           <ul class="social">
-            <li><a target="_blank" href="http://gplus.to/joshdmiller"><i class="icon-google-plus-sign"></i></a></li>
-            <li><a target="_blank" href="http://twitter.com/joshdmiller"><i class="icon-twitter-sign"></i></a></li>
-            <li><a target="_blank" href="http://linkedin.com/in/joshdmiller"><i class="icon-linkedin-sign"></i></a></li>
-            <li><a target="_blank" href="http://github.com/joshdmiller/ng-boilerplate"><i class="icon-github-sign"></i></a></li>
+            <li><a target="_blank" href="http://gplus.to/joeoravec"><i class="icon-google-plus-sign"></i></a></li>
+            <li><a target="_blank" href="http://twitter.com/joeoravec"><i class="icon-twitter-sign"></i></a></li>
+            <li><a target="_blank" href="http://linkedin.com/in/joeoravec"><i class="icon-linkedin-sign"></i></a></li>
+            <li><a target="_blank" href="http://github.com/joeoravec"><i class="icon-github-sign"></i></a></li>
           </ul>
 
 
@@ -116,5 +119,21 @@
         </div>
       </div>
     </footer>
+    <!-- compiled JS -->
+    <script type="text/javascript" src="vendor/angular/angular.js"></script>
+    <script type="text/javascript" src="vendor/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
+    <script type="text/javascript" src="vendor/angular-ui-utils/modules/route/route.js"></script>
+    <script type="text/javascript" src="src/app/about/about.js"></script>
+    <script type="text/javascript" src="src/app/app.js"></script>
+    <script type="text/javascript" src="src/app/controllers.js"></script>
+    <script type="text/javascript" src="src/app/directives.js"></script>
+    <script type="text/javascript" src="src/app/home/home.js"></script>
+    <script type="text/javascript" src="src/app/models.js"></script>
+    <script type="text/javascript" src="src/common/plusOne/plusOne.js"></script>
+    <script type="text/javascript" src="src/common/titleService/titleService.js"></script>
+    <script type="text/javascript" src="templates-common.js"></script>
+    <script type="text/javascript" src="templates-app.js"></script>
   </body>
 </html>

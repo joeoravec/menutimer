@@ -24,4 +24,71 @@
 
 		return MenuItem;
 	}]);
+
+    services.factory('Menu', [function () {
+        var Menu = function() {
+            this.menuItems = [];
+            this.starttime = 0;
+            this.dinnertime = null;
+        };
+
+        Menu.prototype.calcTimes = function () {
+            var i, menuLength = this.menuItems.length, lastPrepTimeStart, thisMenuItemStart, thisSectionStart = 0, thisSectionEnd = 0,
+                sortMenu = function (a, b) {
+                    var keyA = parseInt(a.cooktime.time, 10),
+                        keyB = parseInt(b.cooktime.time, 10);
+
+                    return keyA - keyB;
+                };
+
+                this.menuItems.sort(sortMenu);
+
+                for (i = 0; i < menuLength; i++) {
+                    thisMenuItemStart = 0;
+
+                    if (this.menuItems[i].finishtime.time && this.menuItems[i].finishtime.time > 0) {
+                        this.menuItems[i].setMenuTime('finishtime', this.menuItems[i].finishtime.time, this.dinnertime - this.menuItems[i].finishtime.time * 60 * 1000, this.dinnertime);
+                    }
+
+                    thisSectionEnd = 0;
+                    if (this.menuItems[i].resttime.time && this.menuItems[i].resttime.time > 0) {
+                        if (this.menuItems[i].finishtime.time && this.menuItems[i].finishtime.time > 0) {
+                            thisSectionEnd = this.menuItems[i].finishtime.start;
+                        } else {
+                            thisSectionEnd = this.dinnertime;
+                        }
+                        this.menuItems[i].setMenuTime('resttime', this.menuItems[i].resttime.time, thisSectionEnd - this.menuItems[i].resttime.time * 60 * 1000, thisSectionEnd);
+                    }
+
+                    thisSectionEnd = 0;
+                    if (this.menuItems[i].resttime.time && this.menuItems[i].resttime.time > 0) {
+                        thisSectionEnd = this.menuItems[i].resttime.start;
+                    } else if (this.menuItems[i].finishtime.time && this.menuItems[i].finishtime.time > 0) {
+                        thisSectionEnd = this.menuItems[i].finishtime.start;
+                    } else {
+                        thisSectionEnd = this.dinnertime;
+                    }
+
+                    this.menuItems[i].setMenuTime('cooktime', this.menuItems[i].cooktime.time, thisSectionEnd - this.menuItems[i].cooktime.time * 60 * 1000, thisSectionEnd);
+
+                    thisMenuItemStart = this.menuItems[i].cooktime.start;
+                    lastPrepTimeStart = i > 0 ? this.menuItems[i - 1].preptime.start : 0;
+
+                    this.menuItems[i].preptime.end = this.menuItems[i].cooktime.start < lastPrepTimeStart || lastPrepTimeStart === 0 ? this.menuItems[i].cooktime.start : lastPrepTimeStart;
+                    this.menuItems[i].preptime.start = this.menuItems[i].preptime.end - this.menuItems[i].preptime.time * 60 * 1000;
+
+                    thisMenuItemStart = this.menuItems[i].preptime.time > 0 ? this.menuItems[i].preptime.start : this.menuItems[i].cooktime.start;
+
+                    this.menuItems[i].start = thisMenuItemStart;
+
+                    if (thisMenuItemStart < this.starttime || this.starttime === 0) {
+                        this.starttime = thisMenuItemStart;
+                    }
+                }
+            console.log((this.dinnertime - this.starttime) / 60000);
+            this.menuItems.reverse();
+        };
+
+        return Menu;
+    }]);
 })(angular);

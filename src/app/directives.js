@@ -6,7 +6,7 @@
     directives.directive("menuBar", function () {
         return {
 			restrict: "E",
-			template: '<div class="{{itemType}}timebar timesegment" title="{{thisTitle}}" style="right: {{rightPosition}}  width: {{thisWidth}} margin-right: {{rightMargin}}"  ng-class="{\'current\': currentTime >= thisStart && currentTime <= thisEnd }" ></div>',
+			template: '<div class="{{itemType}}timebar timesegment timebar" title="{{thisTitle}}" style="right: {{rightPosition}}  width: {{thisWidth}} margin-right: {{rightMargin}}"  ng-class="{\'current\': currentTime >= thisStart && currentTime <= thisEnd }" ></div>',
 			controller: function ($scope) {
                 this.formattedDate = function (timeValue) {
 					var datevalue = new Date(timeValue);

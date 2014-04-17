@@ -25,6 +25,6 @@ describe( 'MyCtrl tests' , function() {
 
     // sortmenu
 
-    
+
 
 });

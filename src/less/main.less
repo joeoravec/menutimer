@@ -22,6 +22,8 @@
 @import '../../vendor/bootstrap/less/buttons.less';
 @import '../../vendor/bootstrap/less/button-groups.less';
 @import '../../vendor/bootstrap/less/dropdowns.less';
+@import '../../vendor/bootstrap/less/tables.less';
+@import '../../vendor/bootstrap/less/forms.less';
 
 
 /**
@@ -32,6 +34,10 @@
 
 @import 'variables.less';
 
+.timebar {
+    border-radius: 6px;
+    border: 3px solid #ccc;
+}
 
 .preptimebar {
     background: #340570;
@@ -49,8 +55,8 @@
     background: #ff0000;
 }
 .timesegment {
-  position: absolute; 
-  top: 0; 
+  position: absolute;
+  top: 0;
   height: 40px;
 }
 
@@ -121,12 +127,12 @@ h2 {
         //border-left: 1px solid rgba(255, 255, 255, 0.75);
         border-right: 1px solid rgba(0, 0, 0, .1);
       }
-      
+
       &:first-child a {
         border-left: 0;
         border-radius: 3px 0 0 3px;
       }
-      
+
       &:last-child a {
         border-right: 0;
         border-radius: 3px 0 0 3px;
@@ -174,7 +180,7 @@ h2 {
 
 /**
  * Now that all app-wide styles have been applied, we can load the styles for
- * all the submodules and components we are using. 
+ * all the submodules and components we are using.
  *
  * TODO: In a later version of this boilerplate, I'd like to automate this.
  */
