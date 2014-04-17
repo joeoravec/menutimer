@@ -175,7 +175,7 @@
         }
         return (totalPixels * $scope.widthMultiplier);
     };
-    
+
     $scope.calcMargin = function (start, end) {
         return (((start - end) / 60000) * $scope.widthMultiplier);
     };
@@ -185,7 +185,7 @@
     };
 
     // --------------
-    
+
     // Set and update the current time
     // Currently refreshing every 30 seconds
 

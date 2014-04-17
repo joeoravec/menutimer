@@ -1,6 +1,6 @@
 module.exports = function ( karma ) {
   karma.configure({
-    /** 
+    /**
      * From where to look for files, starting with the location of this file.
      */
     basePath: '../',
@@ -16,16 +16,24 @@ module.exports = function ( karma ) {
     ],
 
     frameworks: [ 'jasmine' ],
-    plugins: [ 'karma-jasmine', 'karma-firefox-launcher', 'karma-chrome-launcher', 'karma-coffee-preprocessor' ],
+    plugins: [ 'karma-jasmine', 'karma-firefox-launcher', 'karma-chrome-launcher', 'karma-coffee-preprocessor', 'karma-coverage'],
     preprocessors: {
+      'src/app/app.js': ['coverage'],
+      'src/app/controllers.js': ['coverage'],
+      'src/app/directives.js': ['coverage'],
+      'src/app/models.js': ['coverage'],
       '**/*.coffee': 'coffee',
     },
 
     /**
      * How to report, by default.
      */
-    reporters: 'dots',
-
+    reporters: ['dots', 'coverage'],
+coverageReporter: {
+  type : 'html',
+  // where to store the report
+  dir : 'coverage/'
+},
     /**
      * On which port should the browser connect, on which port is the test runner
      * operating, and what is the URL path for the browser to use.
@@ -34,7 +42,7 @@ module.exports = function ( karma ) {
     runnerPort: 9100,
     urlRoot: '/',
 
-    /** 
+    /**
      * Disable file watching by default.
      */
     autoWatch: false,

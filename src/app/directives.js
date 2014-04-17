@@ -76,6 +76,7 @@
                // console.log(thisType);
                // scope.currentTimeFormatted = barCtrl.formattedDate(scope.currentTime);
                var init = function () {
+                console.log(thisType);
 					scope.thisStart = scope.myItem[thisType].start;
 					scope.thisEnd = scope.myItem[thisType].end;
 					scope.thisTime = scope.myItem[thisType].time;
