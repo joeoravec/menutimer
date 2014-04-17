@@ -15,6 +15,7 @@
 		};
 
 		MenuItem.prototype.setMenuTime = function (timeType, time, start, end) {
+            if (time === null) { time = 0; }
 			this[timeType] = {
 				'time': time,
 				'start': start,
@@ -25,7 +26,7 @@
 		return MenuItem;
 	}]);
 
-    services.factory('Menu', [function () {
+    services.factory('Menu', ['MenuItem', function (MenuItem) {
         var Menu = function() {
             this.menuItems = [];
             this.starttime = 0;
@@ -87,6 +88,24 @@
                 }
             console.log((this.dinnertime - this.starttime) / 60000);
             this.menuItems.reverse();
+        };
+
+        Menu.prototype.createMenuItem = function (name, preptime, cooktime, resttime, finishtime) {
+            var thisstart = new Date(this.dinnertime - cooktime * 60 * 1000),
+                thisend = new Date(this.dinnertime),
+                newItem = new MenuItem(name, thisstart.toLocaleTimeString(), thisend.toLocaleTimeString());
+
+            newItem.setMenuTime('finishtime', finishtime, 0, 0);
+            newItem.setMenuTime('resttime', resttime, 0, 0);
+            newItem.setMenuTime('cooktime', cooktime, 0, 0);
+            newItem.setMenuTime('preptime', preptime, 0, 0);
+
+            console.log(this);
+
+            this.menuItems.push(newItem);
+            this.calcTimes();
+            console.log(this);
+
         };
 
         return Menu;

@@ -39,43 +39,41 @@
   </head>
   <body ng-app="menuApp">
     <div class="container">
+        <div ng-controller="MyCtrl">{{testMenu.starttime}}
+            <div ng-repeat="item in testMenu.menuItems" style="height:44px; padding: 2px;" class="well">
+                <div style="float: left;">{{item.name}}: </div>
+                <div style="position: relative;">
 
-      <div ng-controller="MyCtrl">{{testMenu.starttime}}
-    <div ng-repeat="item in testMenu.menuItems" style="height:44px; padding: 2px;">
-        <div style="float: left;">{{item.name}}: </div>
-        <div style="position: relative;">
+                    <menu-bar item-type="finish" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
+                    <menu-bar item-type="rest" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
+                    <menu-bar item-type="cook" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
+                    <menu-bar item-type="prep" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
 
-            <menu-bar item-type="finish" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
-            <menu-bar item-type="rest" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
-            <menu-bar item-type="cook" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
-            <menu-bar item-type="prep" my-item="item" multiplier="widthMultiplier" current-time="currentTime"></menu-bar>
+                </div>
+                <br/>
+            </div>
+            <div ng-show="menu.length==0">No Menu Items added</div>
 
+            <br/>
+            <label for="itemname">Dish/Course:</label>
+            <input name="itemname" type="text" ng-model="itemName" />
+            <br/>
+            <label for="preptime">Prep Time:</label>
+            <input name="preptime" type="text" ng-model="prepTime" />
+            <br/>
+            <label for="cooktime">Cook Time:</label>
+            <input name="cooktime" type="text" ng-model="cookTime" />
+            <br/>
+            <label for="resttime">Rest Time:</label>
+            <input name="resttime" type="text" ng-model="restTime" />
+            <br/>
+            <label for="finishtime">Finish Time:</label>
+            <input name="finishtime" type="text" ng-model="finishTime" />
+            <br/>
+            <button ng-click="addMenuItem()">Add to menu</button>
+            <div>Now: {{ currentTime }} ( {{formatDate(currentTime) }} )</div>
+            <div>Target: {{ testMenu.dinnertime }} ( {{formatDate(testMenu.dinnertime) }} )</div>
         </div>
-        <br/>
-    </div>
-    <div ng-show="menu.length==0">No Menu Items added</div>
-
-    <br/>
-    <label for="itemname">Dish/Course:</label>
-    <input name="itemname" type="text" ng-model="itemName" />
-    <br/>
-    <label for="preptime">Prep Time:</label>
-    <input name="preptime" type="text" ng-model="prepTime" />
-    <br/>
-    <label for="cooktime">Cook Time:</label>
-    <input name="cooktime" type="text" ng-model="cookTime" />
-    <br/>
-    <label for="resttime">Rest Time:</label>
-    <input name="resttime" type="text" ng-model="restTime" />
-    <br/>
-    <label for="finishtime">Finish Time:</label>
-    <input name="finishtime" type="text" ng-model="finishTime" />
-    <br/>
-    <button ng-click="addMenuItem()">Add to menu</button>
-    <div>Now: {{ currentTime }} ( {{formatDate(currentTime) }} )</div>
-    <div>Target: {{ dinnertime }} ( {{formatDate(dinnertime) }} )</div>
-</div>
-      </div>
     </div>
 
     <div class="container" ui-view="main"></div>
