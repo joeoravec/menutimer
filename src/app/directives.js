@@ -1,4 +1,8 @@
-
+/******************************************
+*
+*  menuApp -- Main Directive
+*
+******************************************/
 (function (angular) {
 
     var directives = angular.module('menuApp.directives', []);
@@ -6,7 +10,7 @@
     directives.directive("menuBar", function () {
         return {
 			restrict: "E",
-			template: '<div class="{{itemType}}timebar timesegment timebar" title="{{thisTitle}}" style="right: {{rightPosition}}  width: {{thisWidth}} margin-right: {{rightMargin}}"  ng-class="{\'current\': currentTime >= thisStart && currentTime <= thisEnd }" ></div>',
+			template: '<div class="{{itemType}}timebar timesegment timebar" title="{{thisTitle}}" ng-class="{\'current\': currentTime >= thisStart && currentTime <= thisEnd }" ></div>',
 			controller: function ($scope) {
                 this.formattedDate = function (timeValue) {
 					var datevalue = new Date(timeValue);
@@ -20,12 +24,10 @@
 					return thisTitle;
                 };
                 this.makeWidth = function (time) {
-					var thisWidth = this.calcSegWidth(time, $scope.multiplier) + "px;";
+					var thisWidth = this.calcSegWidth(time, $scope.multiplier) + "px";
 					return thisWidth;
                 };
                 this.makeRightPosition = function (type, myItem) {
-                    console.log(type);
-                    console.log(myItem.finishtime.start);
                     var rightPosition = 0;
                     switch (type) {
                         case "preptime":
@@ -41,8 +43,7 @@
                             rightPosition = 0;
                             break;
                     }
-                    console.log(rightPosition);
-                    return rightPosition + "px;";
+                    return rightPosition + "px";
                 };
                 this.calcRight = function() {
                     var i,
@@ -55,7 +56,7 @@
                     return (totalPixels * $scope.multiplier);
                 };
                this.makeRightMargin = function (myItem) {
-					return (((myItem.cooktime.start - myItem.preptime.end) / 60000) * $scope.multiplier) + 'px;';
+					return (((myItem.cooktime.start - myItem.preptime.end) / 60000) * $scope.multiplier) + 'px';
 				};
             },
 			scope: {
@@ -66,31 +67,33 @@
 			},
             replace: true,
             link: function (scope, element, attrs, barCtrl) {
-               scope.$watch('multiplier', function(newValue, oldValue) {
-					if (newValue) {
-						makeBar();
-					}
-				}, true);
+                var thisType = attrs.itemType + "time",
+                    initBar = function () {
+                        scope.thisStart = scope.myItem[thisType].start;
+                        scope.thisEnd = scope.myItem[thisType].end;
+                        scope.thisTime = scope.myItem[thisType].time;
+                        scope.thisTitle = barCtrl.makeTitle(scope.thisStart, scope.thisEnd);
+                        makeBar();
+                    },
+                    makeBar = function () {
+                        var thisWidth = barCtrl.makeWidth(scope.thisTime),
+                            rightPosition = barCtrl.makeRightPosition(thisType, scope.myItem),
+                            rightMargin = thisType === 'preptime' ? barCtrl.makeRightMargin(scope.myItem) : '0;';
 
-               var thisType = attrs.itemType + "time";
-               // console.log(thisType);
-               // scope.currentTimeFormatted = barCtrl.formattedDate(scope.currentTime);
-               var init = function () {
-                console.log(thisType);
-					scope.thisStart = scope.myItem[thisType].start;
-					scope.thisEnd = scope.myItem[thisType].end;
-					scope.thisTime = scope.myItem[thisType].time;
-					scope.thisTitle = barCtrl.makeTitle(scope.thisStart, scope.thisEnd);
-					makeBar();
-				};
+                        element.css({
+                            'right': rightPosition,
+                            'width' : thisWidth,
+                            'margin-right' : rightMargin
+                        });
+                    };
 
-				var makeBar = function () {
-					scope.thisWidth = barCtrl.makeWidth(scope.thisTime);
-					scope.rightPosition = barCtrl.makeRightPosition(thisType, scope.myItem);
-					scope.rightMargin = thisType === 'preptime' ? barCtrl.makeRightMargin(scope.myItem) : '0;';
-				};
+                scope.$watch('multiplier', function(newValue, oldValue) {
+                    if (newValue) {
+                        makeBar();
+                    }
+                }, true);
 
-				init();
+				initBar();
             }
         };
     });
