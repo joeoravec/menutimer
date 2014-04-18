@@ -10,7 +10,7 @@
     directives.directive("menuBar", function () {
         return {
 			restrict: "E",
-			template: '<div class="{{itemType}}timebar timesegment timebar" title="{{thisTitle}}" ng-class="{\'current\': currentTime >= thisStart && currentTime <= thisEnd }" ></div>',
+			template: '<div class="timesegment timebar" ng-class="{\'current\': currentTime >= thisStart && currentTime <= thisEnd }" ></div>',
 			controller: function ($scope) {
                 this.formattedDate = function (timeValue) {
 					var datevalue = new Date(timeValue);
@@ -21,6 +21,7 @@
 				};
                 this.makeTitle = function (start, end) {
 					var thisTitle = this.formattedDate(start) + " - " + this.formattedDate(end);
+                    if (start === 0 || end === 0) { thisTitle = ""; }
 					return thisTitle;
                 };
                 this.makeWidth = function (time) {
@@ -72,18 +73,16 @@
                         scope.thisStart = scope.myItem[thisType].start;
                         scope.thisEnd = scope.myItem[thisType].end;
                         scope.thisTime = scope.myItem[thisType].time;
-                        scope.thisTitle = barCtrl.makeTitle(scope.thisStart, scope.thisEnd);
+                        console.log(scope.thisStart, scope.thisEnd, scope.thisTime);
                         makeBar();
                     },
                     makeBar = function () {
-                        var thisWidth = barCtrl.makeWidth(scope.thisTime),
-                            rightPosition = barCtrl.makeRightPosition(thisType, scope.myItem),
-                            rightMargin = thisType === 'preptime' ? barCtrl.makeRightMargin(scope.myItem) : '0;';
-
+                        element.addClass(thisType + 'bar');
+                        element.attr('title', barCtrl.makeTitle(scope.thisStart, scope.thisEnd));
                         element.css({
-                            'right': rightPosition,
-                            'width' : thisWidth,
-                            'margin-right' : rightMargin
+                            'right': barCtrl.makeRightPosition(thisType, scope.myItem),
+                            'width' : barCtrl.makeWidth(scope.thisTime),
+                            'margin-right' : thisType === 'preptime' ? barCtrl.makeRightMargin(scope.myItem) : '0;'
                         });
                     };
 

@@ -16,14 +16,13 @@ describe( 'MyCtrl tests' , function() {
       expect( $scope.formatDate(millisecs)).toBe('4:11:55 PM');
     }));
 
-    // set dinnertime
+    // resetMenuItemScope
 
-    // add menuitem
+    // onTimeout
 
-    // calctimes
+    // initApp
 
-
-    // sortmenu
+    // watch
 
 
 

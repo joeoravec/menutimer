@@ -39,7 +39,7 @@
   </head>
   <body ng-app="menuApp">
     <div class="container">
-        <div ng-controller="MyCtrl">{{testMenu.starttime}}
+        <div ng-controller="MyCtrl">{{formatDate(testMenu.starttime)}}
             <div ng-repeat="item in testMenu.menuItems" style="height:44px; padding: 2px;" class="well">
                 <div style="float: left;">{{item.name}}: </div>
                 <div style="position: relative;">
@@ -76,28 +76,7 @@
         </div>
     </div>
 
-    <div class="container" ui-view="main"></div>
-<div class="panel">
-        <h3 class="panel-heading">Button Styles</h3>
-        <button class="btn">Basic Button</button>
-        <button class="btn btn-primary">Primary</button>
-        <button class="btn btn-success">Success</button>
-        <button class="btn btn-warning">Warning</button>
-        <button class="btn btn-info">Info</button>
-        <button class="btn btn-danger">Danger</button>
-    </div>
 
-    <div class="panel">
-        <h3 class="panel-heading">Striped, Bordered and Highlighted Table</h3>
-        <table class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr><th>Country</th><th>Capital City</th></tr>
-            </thead>
-            <tr><td>United Kingdom</td><td>London</td></tr>
-            <tr><td>France</td><td>Paris</td></tr>
-            <tr><td>Spain</td><td>Madrid</td></tr>
-        </table>
-    </div>
 
 
     <footer class="footer">
@@ -111,9 +90,7 @@
           </ul>
 
 
-          <p>
 
-          </p>
         </div>
       </div>
     </footer>

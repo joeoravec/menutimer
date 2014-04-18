@@ -78,6 +78,7 @@
             if ($scope.testMenu.dinnertime === null) {
                 timeNow.setHours(18, 0, 0, 0);
                 $scope.testMenu.dinnertime = Date.parse(timeNow);
+                console.log( $scope.testMenu.dinnertime, $scope.formatDate($scope.testMenu.dinnertime));
             }
 
             if (Object.keys($scope.myQs).length > 0) {

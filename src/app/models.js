@@ -86,7 +86,6 @@
                         this.starttime = thisMenuItemStart;
                     }
                 }
-            console.log((this.dinnertime - this.starttime) / 60000);
             this.menuItems.reverse();
         };
 
@@ -100,12 +99,8 @@
             newItem.setMenuTime('cooktime', cooktime, 0, 0);
             newItem.setMenuTime('preptime', preptime, 0, 0);
 
-            console.log(this);
-
             this.menuItems.push(newItem);
             this.calcTimes();
-            console.log(this);
-
         };
 
         return Menu;
