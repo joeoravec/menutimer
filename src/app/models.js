@@ -33,6 +33,15 @@
             this.dinnertime = null;
         };
 
+        Menu.prototype.setDinnerTime = function (mydinnertime) {
+            var timeNow = new Date();
+            if (!mydinnertime) {
+
+                timeNow.setHours(18, 0, 0, 0);
+                $scope.testMenu.dinnertime = Date.parse(timeNow);
+            }
+        };
+
         Menu.prototype.calcTimes = function () {
             var i, menuLength = this.menuItems.length, lastPrepTimeStart, thisMenuItemStart, thisSectionStart = 0, thisSectionEnd = 0,
                 sortMenu = function (a, b) {
